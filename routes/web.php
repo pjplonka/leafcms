@@ -14,4 +14,9 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::resource('articles', '\LeafCms\Blog\Controllers\ArticleController');
     });
 
+    Route::prefix('blog')->name('blog.')->group(function () {
+        Route::get('/blog/tags/{tag}/delete', '\LeafCms\Blog\Controllers\TagController@destroy')->name('tags.get-destroy');
+        Route::resource('tags', '\LeafCms\Blog\Controllers\TagController');
+    });
+
 });
