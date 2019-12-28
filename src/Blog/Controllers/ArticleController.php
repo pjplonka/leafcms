@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use LeafCms\Blog\Models\Article;
 use LeafCms\Blog\Models\Category;
+use LeafCms\Blog\Models\Tag;
 
 class ArticleController
 {
@@ -21,9 +22,11 @@ class ArticleController
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
         return view('blog.articles.create', [
             'categories' => $categories,
+            'tags'       => $tags,
         ]);
     }
 
@@ -33,11 +36,14 @@ class ArticleController
             'title' => 'required|max:255|unique:blog_articles',
         ]);
 
-        Article::query()->create([
-            'title' => $request->input('title'),
-            'slug'  => Str::slug($request->input('title')),
-            'content'  => json_encode($request->input('content')),
+        /** @var Article $article */
+        $article = Article::query()->create([
+            'title'   => $request->input('title'),
+            'slug'    => Str::slug($request->input('title')),
+            'content' => json_encode($request->input('content')),
         ]);
+
+        $article->tags()->sync($request->input('tags'));
 
         return redirect(route('dashboard.blog.articles.index'))->with('flash-success', 'Artykuł został dodany.');
     }
@@ -45,10 +51,12 @@ class ArticleController
     public function edit(Article $article)
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
         return view('blog.articles.edit', [
             'article'    => $article,
             'categories' => $categories,
+            'tags'       => $tags,
         ]);
     }
 
@@ -60,10 +68,12 @@ class ArticleController
         ]);
 
         $article->update([
-            'title' => $request->input('title'),
-            'slug' => $request->input('slug'),
-            'content'  => json_encode($request->input('content')),
+            'title'   => $request->input('title'),
+            'slug'    => $request->input('slug'),
+            'content' => json_encode($request->input('content')),
         ]);
+
+        $article->tags()->sync($request->input('tags'));
 
         return redirect(route('dashboard.blog.articles.index'))->with('flash-success', 'Arttykuł został zaktualizowany.');
     }

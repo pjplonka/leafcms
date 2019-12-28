@@ -25,6 +25,19 @@
         </div>
 
         <div class="form-group">
+            <label for="tags">Tagi</label>
+            <select multiple class="form-control" id="tags" name="tags[]">
+                @foreach ($tags as $tag)
+                    <option
+                        value="{{ $tag->id }}"
+                        {{ $article->tags->firstWhere('id', '=', $tag->id) ? 'selected' : '' }}
+                    >{{ $tag->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="slug">Slug</label>
             <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug', $article->slug)  }}">
         </div>

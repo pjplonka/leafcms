@@ -2,10 +2,12 @@
 
 namespace Tests\Feature\Blog;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use LeafCms\Blog\Models\Article;
+use LeafCms\Blog\Models\Tag;
 use Tests\TestCase;
 
 class ArticleTest extends TestCase
@@ -31,13 +33,13 @@ class ArticleTest extends TestCase
         $slug = Str::slug($title);
         $content = [
             [
-                'type' => 'header',
+                'type'  => 'header',
                 'level' => 'h2',
-                'value' => $this->faker->title
+                'value' => $this->faker->title,
             ],
             [
-                'type' => 'paragraph',
-                'value' => '<p>' . $this->faker->paragraph . '</p>'
+                'type'  => 'paragraph',
+                'value' => '<p>' . $this->faker->paragraph . '</p>',
             ],
         ];
 
@@ -50,8 +52,8 @@ class ArticleTest extends TestCase
             ->assertRedirect(route('dashboard.blog.articles.index'));
 
         $expectedDataInDb = array_merge($attributes, [
-            'slug' => $slug,
-            'content' => json_encode($content)
+            'slug'    => $slug,
+            'content' => json_encode($content),
         ]);
 
         $this->assertDatabaseHas('blog_articles', $expectedDataInDb);
@@ -72,7 +74,7 @@ class ArticleTest extends TestCase
         $article = factory(Article::class)->create();
 
         $attributes = [
-            'title' => $article->title
+            'title' => $article->title,
         ];
 
         $response = $this->post(route('dashboard.blog.articles.store', $attributes));
@@ -90,19 +92,19 @@ class ArticleTest extends TestCase
 
         $content = [
             [
-                'type' => 'header',
+                'type'  => 'header',
                 'level' => 'h2',
-                'value' => $this->faker->title
+                'value' => $this->faker->title,
             ],
             [
-                'type' => 'paragraph',
-                'value' => '<p>' . $this->faker->paragraph . '</p>'
+                'type'  => 'paragraph',
+                'value' => '<p>' . $this->faker->paragraph . '</p>',
             ],
         ];
 
         $attributes = [
-            'title' => $this->faker->title,
-            'slug' => $this->faker->slug,
+            'title'   => $this->faker->title,
+            'slug'    => $this->faker->slug,
             'content' => $content,
         ];
 
@@ -110,8 +112,8 @@ class ArticleTest extends TestCase
             ->assertRedirect(route('dashboard.blog.articles.index'));
 
         $expectedDataInDb = array_merge($attributes, [
-            'id' => $article->id,
-            'content' => json_encode($content)
+            'id'      => $article->id,
+            'content' => json_encode($content),
         ]);
 
         $this->assertDatabaseMissing('blog_articles', $article->toArray());
@@ -129,7 +131,7 @@ class ArticleTest extends TestCase
 
         $attributes = [
             'title' => $article->title,
-            'slug' => $article->slug
+            'slug'  => $article->slug,
         ];
 
         $response = $this->put(
@@ -166,5 +168,77 @@ class ArticleTest extends TestCase
             ->assertRedirect(route('dashboard.blog.articles.index'));
 
         $this->assertDatabaseMissing('blog_articles', $article->toArray());
+    }
+
+    /** @test */
+    public function a_user_can_add_tags_to_article(): void
+    {
+        /** @var Collection $tags */
+        $tags = factory(Tag::class, 2)->create();
+
+        $attributes = [
+            'title' => 'Article title',
+            'tags'  => $tags->pluck('id')->toArray(),
+        ];
+
+        $this->post(route('dashboard.blog.articles.store'), $attributes);
+
+        /** @var Article $article */
+        $article = Article::query()->first();
+
+        $this->assertDatabaseHas('blog_article_tag', [
+            'article_id' => $article->id,
+            'tag_id'     => $tags[0]->id,
+        ]);
+
+        $this->assertDatabaseHas('blog_article_tag', [
+            'article_id' => $article->id,
+            'tag_id'     => $tags[1]->id,
+        ]);
+    }
+
+    /** @test */
+    public function a_user_can_update_article_tags(): void
+    {
+        /** @var Collection $tags */
+        $tags = factory(Tag::class, 2)->create();
+
+        /** @var Article $article */
+        $article = factory(Article::class)->create();
+
+        $article->tags()->sync($tags->pluck('id')->toArray());
+
+        $this->assertCount(2, $article->tags);
+
+        /** @var Collection $tags */
+        $newTags = factory(Tag::class, 2)->create();
+
+        $attributes = [
+            'title' => $article->title,
+            'slug'  => $article->slug,
+            'tags'  => $newTags->pluck('id')->toArray(),
+        ];
+
+        $this->put(route('dashboard.blog.articles.update', ['article' => $article->id]), $attributes);
+
+        $this->assertDatabaseMissing('blog_article_tag', [
+            'article_id' => $article->id,
+            'tag_id'     => $tags[0]->id,
+        ]);
+
+        $this->assertDatabaseMissing('blog_article_tag', [
+            'article_id' => $article->id,
+            'tag_id'     => $tags[1]->id,
+        ]);
+
+        $this->assertDatabaseHas('blog_article_tag', [
+            'article_id' => $article->id,
+            'tag_id'     => $newTags[0]->id,
+        ]);
+
+        $this->assertDatabaseHas('blog_article_tag', [
+            'article_id' => $article->id,
+            'tag_id'     => $newTags[1]->id,
+        ]);
     }
 }

@@ -25,6 +25,15 @@
             <input type="text" class="form-control" id="title" name="title">
         </div>
 
+        <div class="form-group">
+            <label for="tags">Tagi</label>
+            <select multiple class="form-control" id="tags" name="tags[]">
+                @foreach ($tags as $tag)
+                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <h3>Content</h3>
 
         <style>
