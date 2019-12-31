@@ -20,4 +20,12 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
 
     });
 
+    Route::prefix('file-center')->name('file-center.')->group(function () {
+
+        Route::get('/file-center/images/{image}/delete', '\LeafCms\FileCenter\Controllers\ImageController@destroy')
+            ->name('images.get-destroy');
+        Route::resource('images', '\LeafCms\FileCenter\Controllers\ImageController');
+
+    });
+
 });

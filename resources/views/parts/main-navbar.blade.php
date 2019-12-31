@@ -17,6 +17,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('dashboard.blog.tags.index') }}">Tagi</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('dashboard.file-center.images.index') }}">Obrazy</a>
+            </li>
         </ul>
     </div>
 </nav>
