@@ -3,13 +3,16 @@
 namespace LeafCms\Blog\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use LeafCms\Blog\Exceptions\NonUniqueSlugException;
 
 /**
  * @property int $id
  * @property string $name
  * @property string $slug
+ * @property Collection $articles
  */
 class Category extends Model
 {
@@ -31,6 +34,11 @@ class Category extends Model
         static::saving(function(self $category) {
             self::checkSlugUniqueness($category);
         });
+    }
+
+    public function articles(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'blog_article_category');
     }
 
     /**

@@ -14,8 +14,9 @@ use LeafCms\FileCenter\Models\Image;
  * @property int        $id
  * @property string     $title
  * @property string     $slug
- * @property Collection $tags
  * @property Image|null $image
+ * @property Collection $categories
+ * @property Collection $tags
  */
 class Article extends Model
 {
@@ -37,6 +38,11 @@ class Article extends Model
         static::saving(function (self $article) {
             self::checkSlugUniqueness($article);
         });
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'blog_article_category');
     }
 
     public function tags(): BelongsToMany

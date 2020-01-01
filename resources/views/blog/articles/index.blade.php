@@ -14,6 +14,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
+                <th scope="col">Categories</th>
                 <th scope="col">Actions</th>
             </tr>
             </thead>
@@ -22,6 +23,7 @@
                 <tr>
                     <th scope="row">{{ $article->id }}</th>
                     <td>{{ $article->title }}</td>
+                    <td>{{ implode(', ', $article->categories->pluck('name')->toArray()) }}</td>
                     <td>
                         <a href="{{ route('dashboard.blog.articles.edit', ['article' => $article->id]) }}">
                             Edytuj

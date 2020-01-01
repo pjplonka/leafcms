@@ -26,6 +26,15 @@
         </div>
 
         <div class="form-group">
+            <label for="categories">Kategorie</label>
+            <select multiple class="form-control" id="categories" name="categories[]">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="tags">Tagi</label>
             <select multiple class="form-control" id="tags" name="tags[]">
                 @foreach ($tags as $tag)

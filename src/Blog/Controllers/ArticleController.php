@@ -47,6 +47,8 @@ class ArticleController
             'image_id' => $request->input('image_id'),
         ]);
 
+        $article->categories()->sync($request->input('categories'));
+
         $article->tags()->sync($request->input('tags'));
 
         return redirect(route('dashboard.blog.articles.index'))->with('flash-success', 'Artykuł został dodany.');
@@ -82,6 +84,8 @@ class ArticleController
             'slug'    => $request->input('slug'),
             'content' => json_encode($request->input('content')),
         ]);
+
+        $article->categories()->sync($request->input('categories'));
 
         $article->tags()->sync($request->input('tags'));
 
