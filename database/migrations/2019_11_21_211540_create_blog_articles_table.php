@@ -12,6 +12,7 @@ class CreateBlogArticlesTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('slug');
+            $table->integer('image_id')->nullable();
             $table->json('content')->nullable();
             $table->timestamps();
         });

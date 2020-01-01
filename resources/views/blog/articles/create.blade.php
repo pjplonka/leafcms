@@ -34,6 +34,16 @@
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="image_id">Obraz</label>
+            <select class="form-control" id="image_id" name="image_id">
+                <option value="">Brak</option>
+                @foreach ($images as $image)
+                    <option value="{{ $image->id }}">{{ $image->id }} | {{ $image->fullFilename() }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <h3>Content</h3>
 
         <style>

@@ -5,14 +5,17 @@ namespace LeafCms\Blog\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use LeafCms\Blog\Exceptions\NonUniqueSlugException;
+use LeafCms\FileCenter\Models\Image;
 
 /**
  * @property int        $id
  * @property string     $title
  * @property string     $slug
  * @property Collection $tags
+ * @property Image|null $image
  */
 class Article extends Model
 {
@@ -39,6 +42,11 @@ class Article extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'blog_article_tag');
+    }
+
+    public function image(): BelongsTo
+    {
+        return $this->belongsTo(Image::class);
     }
 
     /**

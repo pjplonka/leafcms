@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use LeafCms\Blog\Models\Article;
 use LeafCms\Blog\Models\Category;
 use LeafCms\Blog\Models\Tag;
+use LeafCms\FileCenter\Models\Image;
 
 class ArticleController
 {
@@ -23,10 +24,12 @@ class ArticleController
     {
         $categories = Category::all();
         $tags = Tag::all();
+        $images = Image::notTaken();
 
         return view('blog.articles.create', [
             'categories' => $categories,
             'tags'       => $tags,
+            'images'     => $images,
         ]);
     }
 
@@ -38,9 +41,10 @@ class ArticleController
 
         /** @var Article $article */
         $article = Article::query()->create([
-            'title'   => $request->input('title'),
-            'slug'    => Str::slug($request->input('title')),
-            'content' => json_encode($request->input('content')),
+            'title'    => $request->input('title'),
+            'slug'     => Str::slug($request->input('title')),
+            'content'  => json_encode($request->input('content')),
+            'image_id' => $request->input('image_id'),
         ]);
 
         $article->tags()->sync($request->input('tags'));
@@ -52,11 +56,17 @@ class ArticleController
     {
         $categories = Category::all();
         $tags = Tag::all();
+        $images = Image::notTaken();
+
+        if ($article->image) {
+            $images->prepend($article->image);
+        }
 
         return view('blog.articles.edit', [
             'article'    => $article,
             'categories' => $categories,
             'tags'       => $tags,
+            'images'     => $images,
         ]);
     }
 

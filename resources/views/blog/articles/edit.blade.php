@@ -38,6 +38,21 @@
         </div>
 
         <div class="form-group">
+            <label for="image_id">Obraz</label>
+            <select class="form-control" id="image_id" name="image_id">
+                <option value="" {{ $article->image_id === null ? 'selected' : '' }}>Brak</option>
+                @foreach ($images as $image)
+                    <option
+                        value="{{ $image->id }}"
+                        {{ (int) $article->image_id === (int) $image->id ? 'selected' : '' }}
+                    >
+                        {{ $image->id }} | {{ $image->fullFilename() }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="form-group">
             <label for="slug">Slug</label>
             <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug', $article->slug)  }}">
         </div>

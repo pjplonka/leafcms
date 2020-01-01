@@ -2,7 +2,9 @@
 
 namespace LeafCms\FileCenter\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 /**
  * @property int    $id
@@ -34,5 +36,14 @@ class Image extends Model
     public function fullPath(): string
     {
         return $this->path . '/' . $this->fullFilename();
+    }
+
+    public static function notTaken(): Collection
+    {
+        return Image::query()->whereNotExists(function (Builder $query) {
+            $query->select('id')
+                ->from('blog_articles')
+                ->whereRaw('blog_articles.image_id = file_center_images.id');
+        })->get();
     }
 }
