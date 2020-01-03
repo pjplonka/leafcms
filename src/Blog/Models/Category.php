@@ -12,7 +12,7 @@ use LeafCms\Blog\Exceptions\NonUniqueSlugException;
  * @property int $id
  * @property string $name
  * @property string $slug
- * @property Collection $articles
+ * @property Article[] $articles
  */
 class Category extends Model
 {
