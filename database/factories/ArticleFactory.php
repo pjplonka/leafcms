@@ -8,5 +8,6 @@ use LeafCms\Blog\Models\Article;
 $factory->define(Article::class, function (Faker $faker) {
     return [
         'title' => $faker->name,
+        'published_at' => $faker->date(),
     ];
 });

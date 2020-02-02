@@ -31,6 +31,7 @@ class ArticleTest extends TestCase
     {
         $title = $this->faker->name;
         $slug = Str::slug($title);
+        $published_at = $this->faker->dateTime;
         $content = [
             [
                 'type'  => 'header',
@@ -44,8 +45,9 @@ class ArticleTest extends TestCase
         ];
 
         $attributes = [
-            'title'   => $title,
-            'content' => $content,
+            'title'        => $title,
+            'content'      => $content,
+            'published_at' => $published_at,
         ];
 
         $this->post(route('dashboard.blog.articles.store'), $attributes)
@@ -103,9 +105,10 @@ class ArticleTest extends TestCase
         ];
 
         $attributes = [
-            'title'   => $this->faker->title,
-            'slug'    => $this->faker->slug,
-            'content' => $content,
+            'title'        => $this->faker->title,
+            'slug'         => $this->faker->slug,
+            'published_at' => $this->faker->dateTime,
+            'content'      => $content,
         ];
 
         $this->put(route('dashboard.blog.articles.update', ['article' => $article->id]), $attributes)
@@ -177,8 +180,9 @@ class ArticleTest extends TestCase
         $tags = factory(Tag::class, 2)->create();
 
         $attributes = [
-            'title' => 'Article title',
-            'tags'  => $tags->pluck('id')->toArray(),
+            'title'        => 'Article title',
+            'published_at' => $this->faker->dateTime,
+            'tags'         => $tags->pluck('id')->toArray(),
         ];
 
         $this->post(route('dashboard.blog.articles.store'), $attributes);
@@ -214,9 +218,10 @@ class ArticleTest extends TestCase
         $newTags = factory(Tag::class, 2)->create();
 
         $attributes = [
-            'title' => $article->title,
-            'slug'  => $article->slug,
-            'tags'  => $newTags->pluck('id')->toArray(),
+            'title'        => $article->title,
+            'slug'         => $article->slug,
+            'published_at' => $article->published_at,
+            'tags'         => $newTags->pluck('id')->toArray(),
         ];
 
         $this->put(route('dashboard.blog.articles.update', ['article' => $article->id]), $attributes);

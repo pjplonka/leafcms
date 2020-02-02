@@ -25,6 +25,11 @@
         </div>
 
         <div class="form-group">
+            <label for="published_at">Data publikacji</label>
+            <input type="date" class="form-control" id="published_at" name="published_at" value="{{ old('published_at', $article->published_at->format('Y-m-d')) }}">
+        </div>
+
+        <div class="form-group">
             <label for="categories">Kategorie</label>
             <select multiple class="form-control" id="categories" name="categories[]">
                 @foreach ($categories as $category)

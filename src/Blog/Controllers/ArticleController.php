@@ -41,10 +41,11 @@ class ArticleController
 
         /** @var Article $article */
         $article = Article::query()->create([
-            'title'    => $request->input('title'),
-            'slug'     => Str::slug($request->input('title')),
-            'content'  => json_encode($request->input('content')),
-            'image_id' => $request->input('image_id'),
+            'title'        => $request->input('title'),
+            'slug'         => Str::slug($request->input('title')),
+            'content'      => json_encode($request->input('content')),
+            'published_at' => $request->input('published_at'),
+            'image_id'     => $request->input('image_id'),
         ]);
 
         $article->categories()->sync($request->input('categories'));
@@ -80,9 +81,10 @@ class ArticleController
         ]);
 
         $article->update([
-            'title'   => $request->input('title'),
-            'slug'    => $request->input('slug'),
-            'content' => json_encode($request->input('content')),
+            'title'        => $request->input('title'),
+            'slug'         => $request->input('slug'),
+            'content'      => json_encode($request->input('content')),
+            'published_at' => $request->input('published_at'),
         ]);
 
         $article->categories()->sync($request->input('categories'));

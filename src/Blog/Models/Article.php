@@ -2,6 +2,7 @@
 
 namespace LeafCms\Blog\Models;
 
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -11,9 +12,10 @@ use LeafCms\Blog\Exceptions\NonUniqueSlugException;
 use LeafCms\FileCenter\Models\Image;
 
 /**
- * @property int        $id
- * @property string     $title
- * @property string     $slug
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property Carbon $published_at
  * @property Image|null $image
  * @property Collection $categories
  * @property Collection $tags
@@ -25,6 +27,8 @@ class Article extends Model
     protected $guarded = [];
 
     protected $table = 'blog_articles';
+
+    protected $dates = ['published_at'];
 
     public function sluggable(): array
     {
