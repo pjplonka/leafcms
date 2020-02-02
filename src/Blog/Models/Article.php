@@ -11,11 +11,12 @@ use LeafCms\Blog\Exceptions\NonUniqueSlugException;
 use LeafCms\FileCenter\Models\Image;
 
 /**
- * @property int        $id
- * @property string     $title
- * @property string     $slug
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property string $content
  * @property Image|null $image
- * @property Collection $categories
+ * @property Collection|Category[] $categories
  * @property Collection $tags
  */
 class Article extends Model
@@ -53,6 +54,25 @@ class Article extends Model
     public function image(): BelongsTo
     {
         return $this->belongsTo(Image::class);
+    }
+
+    public function contentAsHtml(): string
+    {
+        $output = '';
+
+        foreach (json_decode($this->content, true) as $element) {
+            switch ($element['type']):
+                case 'header':
+                    $output .= '<' . $element['level'] . '>' . $element['value'] . '</' . $element['level'] . '>';
+                    break;
+                case 'paragraph':
+                    $output .= $element['value'];
+                    break;
+
+            endswitch;
+        }
+
+        return $output;
     }
 
     /**

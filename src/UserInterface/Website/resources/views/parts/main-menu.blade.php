@@ -1,37 +1,31 @@
+@php /** @var \LeafCms\UserInterface\Website\Display\Display $display */ @endphp
 @inject('display', '\LeafCms\UserInterface\Website\Display\Display')
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<section class="menu-manager">
 
-    <a class="navbar-brand" href="#">Navbar</a>
+    <ul class="menu-list list-covered">
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+        <li class="menu-list-link">
+            <a href="{{ route('website.pages.homepage') }}" class="menu-list-href link-covered">
+                Strona Główna
+            </a>
+        </li>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ route('website.homepage') }}">Strona główna<span class="sr-only">(current)</span></a>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Kategorie
+        @foreach ($display->categories()->list() as $category)
+            <li class="menu-list-link">
+                <a href="{{ route('website.categories.show', ['slug' => $category->slug]) }}"
+                   class="menu-list-href link-covered">
+                    {{ $category->name }}
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    @foreach ($display->categories()->list() as $category)
-                        <a class="dropdown-item" href="{{ route('website.categories.show', ['slug' => $category->slug]) }}">
-                            {{ $category->name }}
-                        </a>
-                    @endforeach
-                </div>
             </li>
+        @endforeach
 
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-    </div>
-</nav>
+        <li class="menu-list-link">
+            <a href="" class="menu-list-href link-covered">
+                Kontakt
+            </a>
+        </li>
+
+    </ul>
+
+</section>

@@ -33,9 +33,15 @@ class Image extends Model
         return $this->path;
     }
 
-    public function fullPath(): string
+    public function fullPath($absolute = false): string
     {
-        return $this->path . '/' . $this->fullFilename();
+        $path = $this->path . '/' . $this->fullFilename();
+
+        if ($absolute) {
+            $path = '/' . $path;
+        }
+
+        return $path;
     }
 
     public static function notTaken(): Collection

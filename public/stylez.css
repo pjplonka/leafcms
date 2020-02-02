@@ -1,0 +1,158 @@
+/** Globalne */
+
+body {
+    font-family: 'PT Sans', sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+
+.list-covered {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.link-covered {
+    text-decoration: none;
+    color: inherit;
+}
+
+/** Top Nav */
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-nav .media {
+
+}
+
+.main-nav .image {
+
+}
+
+.main-nav .clicks {
+
+}
+
+/** Main menu */
+
+.menu-manager {
+    border-top: 1px dotted grey;
+    border-bottom: 1px dotted grey;
+    margin: 20px 0;
+}
+
+.menu-manager .menu-list {
+    display: flex;
+    justify-content: center;
+}
+
+.menu-manager .menu-list-link {
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 400;
+    display: block;
+    color: #000;
+}
+
+.menu-manager .menu-list-href {
+    padding: 15px 15px;
+    display: block;
+}
+
+.menu-manager .menu-list-link:hover .menu-list-href {
+    color: green;
+    transition: 0.3s;
+}
+
+/** Lista artykułów w kategorii */
+.category-articles {
+    display: flex;
+}
+
+.category-articles .article {
+    display: flex;
+    margin: 20px;
+}
+
+.category-articles .article .information {
+    width: 275px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.category-articles .article .information .category-link {
+    display: block;
+    color: #de4d60;
+    transition: 0.3s;
+    font-size: 110%;
+    margin-bottom: 10px;
+}
+
+.category-articles .article .information .category-link:hover {
+    color: #9a9497;
+}
+
+.category-articles .article .information .article-link {
+    display: block;
+    text-transform: uppercase;
+    font-size: 180%;
+}
+
+.category-articles .article .information .published-date {
+    color: rgba(0, 0, 0, 0.49);
+    font-size: 110%;
+    display: block;
+    margin-top: 10px;
+}
+
+.category-head {
+    display: flex;
+
+}
+
+.category-head .category-top {
+    flex: 1 1 0;
+    position: relative;
+}
+
+.category-head .category-top-bg {
+    max-width: 100%;
+    filter: brightness(80%);
+}
+
+.category-head .information {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.category-head .information .header {
+    text-align: center;
+    word-spacing: 2.1px;
+    font-family: "PT Serif", Georgia, serif;
+    font-weight: bold;
+    font-size: 150%;
+    margin: 20px;
+
+}
+
+.category-head .information .art-title {
+    line-height: 180%;
+}
+
+.category-head .information .art-title a:hover {
+    color: red;
+    transition: 0.2s;
+}
